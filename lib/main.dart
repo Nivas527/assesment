@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'dem.dart';
+import 'TV_Series.dart';
+import 'movies.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Dem(),
+      home: TvSeries(),
     );
   }
 }
