@@ -16,7 +16,10 @@ class Dem extends StatefulWidget {
   State<Dem> createState() => _DemState();
 }
 
+
 class _DemState extends State<Dem> {
+
+
   Future<Movie> fetchMovies() async {
     var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/popular?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
@@ -58,7 +61,8 @@ class _DemState extends State<Dem> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text("Movies", style: TextStyle(fontSize: 16, color: Colors.black)),
+            Text("Movies", style: TextStyle(fontSize: 20, color: Colors.red)
+            ),
           ],
         ),
         actions: [

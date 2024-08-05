@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:assesment/Trending_series.dart';
 import 'package:assesment/style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'TV_popular_class.dart';
 import 'Top_Series_class.dart';
+import 'movies.dart';
 
 class TvSeries extends StatefulWidget {
   const TvSeries({super.key});
@@ -57,6 +59,8 @@ Future<List<dynamic>> fetchTVData() async {
   return results;
 }
 
+
+
 class _TvSeriesState extends State<TvSeries> {
   @override
   Widget build(BuildContext context) {
@@ -64,7 +68,10 @@ class _TvSeriesState extends State<TvSeries> {
       child: Scaffold(
         appBar: AppBar(
           leading: Icon(Icons.menu,color: Colors.black,),
-          title: Text("Tv Series",),
+          title:
+          Text("Television Series",
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -82,7 +89,11 @@ class _TvSeriesState extends State<TvSeries> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Trending Now", style: heading),
-                    Text("See all >>",style: seeall,),
+                    InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> TrendingSeries()));
+                        },
+                        child: Text("See all >>",style: seeall,)),
                   ],
                 ),
               ),
@@ -136,7 +147,6 @@ class _TvSeriesState extends State<TvSeries> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Top rated",style: heading,),
-                              Text("See all >>",style: seeall,)
                             ],
                           ),
                         ),
@@ -180,7 +190,7 @@ class _TvSeriesState extends State<TvSeries> {
                             height: 215,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: todaytv.results.length,
+                              itemCount: 5,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.all(6.0),

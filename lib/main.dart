@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'Bottom_navigation.dart';
 import 'TV_Series.dart';
+import 'Trending_series.dart';
 import 'movies.dart';
 
 void main() {
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: TvSeries(),
+      home: BottomNavigation(),
     );
   }
 }
