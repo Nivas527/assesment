@@ -197,7 +197,8 @@ class _TvSeriesState extends State<TvSeries> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${todaytv.results[index].posterPath}',
+                                        todaytv.results[index].posterPath.isNotEmpty ? 'https://image.tmdb.org/t/p/w500${todaytv.results[index].posterPath}' : 'https://image.tmdb.org/t/p/w500${todaytv.results[index].backdropPath}',
+
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
@@ -229,7 +230,7 @@ class _TvSeriesState extends State<TvSeries> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${tvair.results[index].posterPath}',
+                                        tvair.results[index].posterPath.isNotEmpty ? 'https://image.tmdb.org/t/p/w500${tvair.results[index].posterPath}' : 'https://image.tmdb.org/t/p/w500${tvair.results[index].backdropPath}',
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,

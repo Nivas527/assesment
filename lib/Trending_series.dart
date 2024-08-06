@@ -94,16 +94,12 @@ class _TrendingSeriesState extends State<TrendingSeries> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(toprated.results[index].originalName.toString(),
-                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: Colors.black),
+                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18,color: Colors.black),
                                                 overflow: TextOverflow.visible,
                                                 maxLines: 2,
                                               ),
-                                              Text("Rating: ${toprated.results[index].voteAverage.round().toString()}",
-                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: Colors.black
-                                                ),
-                                              ),
-                                              Text("Language: ${toprated.results[index].originalLanguage}",
-                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: Colors.black
+                                              Text("Rating : (${toprated.results[index].voteAverage.round().toString()}/10)",
+                                                style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: Colors.black
                                                 ),
                                               ),
                                             ],
