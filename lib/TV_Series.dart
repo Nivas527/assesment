@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:assesment/Search_Screen.dart';
 import 'package:assesment/Trending_series.dart';
 import 'package:assesment/Trending_series_individual.dart';
 import 'package:assesment/style.dart';
@@ -11,7 +12,7 @@ import 'movies.dart';
 
 class TvSeries extends StatefulWidget {
   const TvSeries({super.key});
-  
+
 
   @override
   State<TvSeries> createState() => _TvSeriesState();
@@ -82,7 +83,11 @@ class _TvSeriesState extends State<TvSeries> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 22),
-              child: Icon(Icons.search_rounded,size: 25,color: Colors.black,),
+              child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                  },
+                  child: Icon(Icons.search_rounded,size: 25,color: Colors.black,)),
             ),
           ],
         ),

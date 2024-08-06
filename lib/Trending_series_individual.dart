@@ -7,12 +7,17 @@ import 'Episodes_classes.dart';
 import 'TV_popular_class.dart';
 import 'package:http/http.dart' as http;
 
+import 'Search_class.dart';
 import 'TV_series_episodes.dart';
 
 class TrendingSeriesIndividual extends StatelessWidget {
   final Results out;
 
-  const TrendingSeriesIndividual({super.key, required this.out});
+  // final Results1 out1;
+
+
+
+  const TrendingSeriesIndividual({super.key,  required this.out,});
 
   @override
   Widget build(BuildContext context) {
