@@ -95,15 +95,17 @@ class OverviewTab extends StatelessWidget {
                       out!.originalName,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
+                      softWrap: true,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22,
                           color: Colors.black),
                     ),
+                    SizedBox(height: 10,),
                     Row(
                       children: [
                         Text(
-                          "Rating : ${out?.voteAverage.round()}/10(${out?.voteCount})",
+                          "Rating : ${out?.voteAverage.round()}/10 (${out?.voteCount})",
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14),
                         ),
@@ -114,7 +116,7 @@ class OverviewTab extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 32, right: 32, top: 15),
+              padding: const EdgeInsets.only(left: 32, right: 32, top: 10),
               child: Container(
                 height: 50,
                 width: double.infinity,
@@ -141,7 +143,7 @@ class OverviewTab extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 32, right: 32, top: 10),
+              padding: const EdgeInsets.only(left: 32, right: 32, top: 15),
               child: Container(
                 height: 50,
                 width: double.infinity,
@@ -167,7 +169,7 @@ class OverviewTab extends StatelessWidget {
                     )),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 15,),
             Text(out!.overview,style: TextStyle(fontWeight: FontWeight.w400,fontSize: 16,color: Colors.black),)
           ],
         ),
@@ -313,21 +315,38 @@ class EpisodesTab extends StatelessWidget {
 }
 
 class CastTab extends StatelessWidget {
-
   final Results? out;
 
-  const CastTab ({super.key, required this.out});
+  const CastTab({super.key, required this.out});
 
-  Future<Castdetails> fetchCast()async {
-    print(out!.id);
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/tv/${out!.id}/credits?api_key=ea80466bd55e4f4e143564b39696b4bd"));
-    var data = jsonDecode(resp.body);
-    return Castdetails.fromJson(data);
+  Future<Castdetails?> fetchCast() async {
+    if (out == null) return null;
+    print(out?.id);
+
+    try {
+      final response = await http.get(Uri.parse(
+          "https://api.themoviedb.org/3/tv/${out!.id}/credits?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return Castdetails.fromJson(data);
+      } else {
+        throw Exception('Failed to load details');
+      }
+    } catch (e) {
+      print('Error fetching details: $e');
+      return null;
+    }
   }
 
   @override
-
   Widget build(BuildContext context) {
+    if (out == null) {
+      return Center(
+        child: Text("No data available."),
+      );
+    }
+
     return FutureBuilder<Castdetails?>(
       future: fetchCast(),
       builder: (context, snapshot) {
@@ -367,28 +386,26 @@ class CastTab extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Image.network(
-                                    details.cast[index].profilePath!.isNotEmpty
-                                        ? "https://image.tmdb.org/t/p/w500${details.cast[index].profilePath}"
-                                        : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
+                                    details.cast[index].profilePath == null
+                                    ?  "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png" :
+                                         "https://image.tmdb.org/t/p/w500${details.cast[index].profilePath}",
                                     height: 80,
                                     width: 100,
                                     fit: BoxFit.fill,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 15),
+                                  SizedBox(width: 10,),
+                                  Expanded(
                                     child: Column(
                                       mainAxisAlignment:
                                       MainAxisAlignment.center,
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
-                                        // Text(details.seasons[index].name,
-                                        //     style: TextStyle(
-                                        //         fontSize: 18,
-                                        //         fontWeight: FontWeight.bold,
-                                        //         color: Colors.white)),
                                         Text(
                                           "Name : ${details.cast[index].name}",
+                                          overflow : TextOverflow.ellipsis,
+                                          maxLines : 2,
+                                          softWrap : true,
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -396,6 +413,9 @@ class CastTab extends StatelessWidget {
                                         ),
                                         Text(
                                           "Character : ${details.cast[index].character}",
+                                          overflow : TextOverflow.ellipsis,
+                                          maxLines : 2,
+                                          softWrap : true,
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -424,5 +444,6 @@ class CastTab extends StatelessWidget {
       },
     );
   }
-
 }
+
+

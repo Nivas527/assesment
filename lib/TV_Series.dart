@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:assesment/Trending_series.dart';
+import 'package:assesment/Trending_series_individual.dart';
 import 'package:assesment/style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,8 +8,10 @@ import 'TV_popular_class.dart';
 import 'Top_Series_class.dart';
 import 'movies.dart';
 
+
 class TvSeries extends StatefulWidget {
   const TvSeries({super.key});
+  
 
   @override
   State<TvSeries> createState() => _TvSeriesState();
@@ -34,6 +37,7 @@ Future<TopSeries> fetchTopSeries() async {
   }
 }
 
+
 Future<TopSeries> fetchTodaySeries() async {
   var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/tv/airing_today?api_key=ea80466bd55e4f4e143564b39696b4bd"));
   if (resp.statusCode == 200) {
@@ -44,6 +48,7 @@ Future<TopSeries> fetchTodaySeries() async {
   }
 }
 
+
 Future<TopSeries> fetchairSeries() async {
   var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/tv/on_the_air?api_key=ea80466bd55e4f4e143564b39696b4bd"));
   if (resp.statusCode == 200) {
@@ -53,6 +58,7 @@ Future<TopSeries> fetchairSeries() async {
     throw Exception('Failed to load airTV shows');
   }
 }
+
 
 Future<List<dynamic>> fetchTVData() async {
   final results = await Future.wait([fetchTrendingSeries(),fetchTopSeries(),fetchTodaySeries(),fetchairSeries()]);
@@ -126,11 +132,16 @@ class _TvSeriesState extends State<TvSeries> {
                                   padding: const EdgeInsets.all(6.0),
                                   child: Column(
                                     children: [
-                                      Image.network(
-                                        'https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}',
-                                        height: 200,
-                                        width: 150,
-                                        fit: BoxFit.fill,
+                                      InkWell(
+                                        onTap : (){
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => TrendingSeriesIndividual(out: populartv.results[index])));
+                                        },
+                                        child: Image.network(
+                                          'https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}',
+                                          height: 200,
+                                          width: 150,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                       // Wrap the Text widget with Expanded
                                     ],
