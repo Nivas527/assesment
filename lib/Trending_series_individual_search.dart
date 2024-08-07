@@ -13,7 +13,6 @@ import 'TV_series_episodes.dart';
 class TrendingSeriesIndividualSearch extends StatelessWidget {
   final Results1 out1;
 
-
   const TrendingSeriesIndividualSearch({
     super.key,
     required this.out1,
@@ -28,10 +27,10 @@ class TrendingSeriesIndividualSearch extends StatelessWidget {
           appBar: AppBar(
             // toolbarHeight: 100,
             automaticallyImplyLeading: true,
-            bottom: TabBar(
+            bottom: const TabBar(
                 labelColor: Colors.red,
                 labelStyle:
-                TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 isScrollable: false,
                 tabs: [
                   Tab(
@@ -83,9 +82,9 @@ class OverviewTab1 extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.black12),
                 child: Image.network(
-                  out1?.posterPath == null ?
-                  "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png"
-                      :  "https://image.tmdb.org/t/p/w500${out1?.posterPath}",
+                  out1?.posterPath == null
+                      ? "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png"
+                      : "https://image.tmdb.org/t/p/w500${out1?.posterPath}",
                   height: 350,
                   width: double.infinity,
                   fit: BoxFit.fill,
@@ -104,19 +103,19 @@ class OverviewTab1 extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       softWrap: true,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22,
                           color: Colors.black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
                       children: [
                         Text(
                           "Rating : ${out1?.voteAverage.round()}/10 (${out1?.voteCount})",
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14),
                         ),
                       ],
@@ -135,7 +134,7 @@ class OverviewTab1 extends StatelessWidget {
                         backgroundColor: Colors.black,
                         foregroundColor: Colors.white),
                     onPressed: () {},
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -162,7 +161,7 @@ class OverviewTab1 extends StatelessWidget {
                         backgroundColor: Colors.grey,
                         foregroundColor: Colors.white),
                     onPressed: () {},
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
@@ -179,12 +178,12 @@ class OverviewTab1 extends StatelessWidget {
                     )),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
               out1!.overview,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                   color: Colors.black),
@@ -224,7 +223,7 @@ class EpisodesTab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (out1 == null) {
-      return Center(
+      return const Center(
         child: Text("No data available."),
       );
     }
@@ -233,16 +232,18 @@ class EpisodesTab1 extends StatelessWidget {
       future: fetchDetails(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: const Center(
+          return const Padding(
+            padding: EdgeInsets.only(top: 50),
+            child: Center(
               child: Text("Please connect to Wifi and Try again ",
-                  style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black)
-              ),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: Colors.black)),
             ),
           );
         } else if (snapshot.hasData) {
@@ -251,7 +252,7 @@ class EpisodesTab1 extends StatelessWidget {
             child: Column(
               children: [
                 ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: details.numberOfSeasons,
@@ -267,9 +268,9 @@ class EpisodesTab1 extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EpisodeScreen(
-                                        epi: details.seasons[index],
-                                        epid: details,
-                                      )));
+                                            epi: details.seasons[index],
+                                            epid: details,
+                                          )));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -284,7 +285,7 @@ class EpisodesTab1 extends StatelessWidget {
                                   children: [
                                     Image.network(
                                       details.seasons[index].posterPath
-                                          .isNotEmpty
+                                              .isNotEmpty
                                           ? "https://image.tmdb.org/t/p/w500${details.seasons[index].posterPath}"
                                           : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                       height: 80,
@@ -295,25 +296,25 @@ class EpisodesTab1 extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 15),
                                       child: Column(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(details.seasons[index].name,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white)),
                                           Text(
                                             "Rating : (${details.voteAverage.round().toString()}/10)",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.white),
                                           ),
                                           Text(
                                             "Total Episodes : ${details.seasons[index].episodeCount.toString()}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.white),
@@ -335,7 +336,7 @@ class EpisodesTab1 extends StatelessWidget {
             ),
           );
         } else {
-          return Center(
+          return const Center(
             child: Text("No data available."),
           );
         }
@@ -372,7 +373,7 @@ class CastTab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (out1 == null) {
-      return Center(
+      return const Center(
         child: Text("No data available."),
       );
     }
@@ -381,7 +382,7 @@ class CastTab1 extends StatelessWidget {
       future: fetchCast(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -394,7 +395,7 @@ class CastTab1 extends StatelessWidget {
             child: Column(
               children: [
                 ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: details.cast.length,
@@ -423,22 +424,22 @@ class CastTab1 extends StatelessWidget {
                                     width: 100,
                                     fit: BoxFit.fill,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Expanded(
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Name : ${details.cast[index].name}",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                           softWrap: true,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white),
@@ -448,7 +449,7 @@ class CastTab1 extends StatelessWidget {
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                           softWrap: true,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white),
@@ -469,7 +470,7 @@ class CastTab1 extends StatelessWidget {
             ),
           );
         } else {
-          return Center(
+          return const Center(
             child: Text("No data available."),
           );
         }

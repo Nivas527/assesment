@@ -71,7 +71,6 @@ class _TrendingSeriesState extends State<TrendingSeries> {
       print(resp.body.length);
       TvPopular tvPopular = TvPopular.fromJson(data);
 
-      // Clear previous data and save new data to the local database only on the first page
       if (page == 1) {
         await DatabaseHelper.instance.clearResults();
         for (var result in tvPopular.results) {
@@ -96,12 +95,12 @@ class _TrendingSeriesState extends State<TrendingSeries> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_rounded,
               color: Colors.black,
             )),
-        title: Text(
-          "Trending Series",
+        title: const Text(
+          "Popular Series",
           style: TextStyle(fontSize: 20, color: Colors.red),
         ),
         centerTitle: true,
@@ -119,11 +118,12 @@ class _TrendingSeriesState extends State<TrendingSeries> {
                 itemBuilder: (context, index) {
                   if (index == _results.length) {
                     return _isLoading
-                        ? Center(child: CircularProgressIndicator())
+                        ? const Center(child: CircularProgressIndicator())
                         : _currentPage < _totalPages
                             ? Padding(
-                              padding: const EdgeInsets.only(left: 22,right: 22,top: 15,bottom: 25),
-                              child: ElevatedButton(
+                                padding: const EdgeInsets.only(
+                                    left: 22, right: 22, top: 15, bottom: 25),
+                                child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.grey,
                                     foregroundColor: Colors.white,
@@ -132,15 +132,15 @@ class _TrendingSeriesState extends State<TrendingSeries> {
                                     _currentPage++;
                                     _fetchTrending();
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Load More',
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
-                            )
-                            : SizedBox.shrink();
+                              )
+                            : const SizedBox.shrink();
                   }
 
                   final result = _results[index];
@@ -179,7 +179,7 @@ class _TrendingSeriesState extends State<TrendingSeries> {
                                     children: [
                                       Text(
                                         result.originalName.toString(),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 18,
                                             color: Colors.black),
@@ -188,7 +188,7 @@ class _TrendingSeriesState extends State<TrendingSeries> {
                                       ),
                                       Text(
                                         "Rating : (${result.voteAverage.round().toString()}/10)",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
                                             color: Colors.black),

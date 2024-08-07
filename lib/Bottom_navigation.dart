@@ -22,7 +22,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: tabs[Selectedindex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: Selectedindex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.tv,

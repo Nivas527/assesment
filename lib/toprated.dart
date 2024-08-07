@@ -4,7 +4,6 @@ import 'package:assesment/toprated_class.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
 class Toprated extends StatefulWidget {
   const Toprated({super.key});
 
@@ -13,10 +12,9 @@ class Toprated extends StatefulWidget {
 }
 
 class _TopratedState extends State<Toprated> {
-
-
-  Future<TopRated> fetchToprated()async {
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/top_rated?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+  Future<TopRated> fetchToprated() async {
+    var resp = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/movie/top_rated?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return TopRated.fromJson(data);
   }
@@ -25,30 +23,39 @@ class _TopratedState extends State<Toprated> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_rounded,color: Colors.black,),
-        title: Text("Top Rated Movies",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: Colors.black),),
+        leading: const Icon(
+          Icons.arrow_back_rounded,
+          color: Colors.black,
+        ),
+        title: const Text(
+          "Top Rated Movies",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             FutureBuilder(
                 future: fetchToprated(),
-                builder: (context, snapshot){
-                  if(snapshot.connectionState==ConnectionState.waiting){
-                    return const Center(child:  CircularProgressIndicator());
-                  }
-                  else if(snapshot.hasError){
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: const Text("Please Connect to WIFI and Try again",
-                          style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Text(
+                        "Please Connect to WIFI and Try again",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Colors.black),
                       ),
                     );
-                  }
-                  else if(snapshot.hasData){
+                  } else if (snapshot.hasData) {
                     final toprated = snapshot.data!;
                     return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: toprated.results.length,
@@ -56,13 +63,15 @@ class _TopratedState extends State<Toprated> {
                         return Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 10,right: 10),
+                            padding: const EdgeInsets.only(left: 10, right: 10),
                             child: Container(
                               color: Colors.grey.shade100,
                               child: Row(
                                 children: [
                                   Image.network(
-                                    'https://image.tmdb.org/t/p/w500${toprated.results[index].posterPath}',
+                                    toprated.results[index].posterPath.isNotEmpty ?
+                                    'https://image.tmdb.org/t/p/w500${toprated.results[index].posterPath}'
+                                    : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                     height: 140,
                                     width: 140,
                                     fit: BoxFit.fill,
@@ -71,26 +80,37 @@ class _TopratedState extends State<Toprated> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(toprated.results[index].originalTitle,
-                                            style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: Colors.black),
+                                          Text(
+                                            toprated
+                                                .results[index].originalTitle,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                                color: Colors.black),
                                             overflow: TextOverflow.visible,
                                             maxLines: 2,
                                           ),
-                                          Text("Rating: ${toprated.results[index].voteAverage.round().toString()}",
-                                          style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: Colors.black
+                                          Text(
+                                            "Rating: ${toprated.results[index].voteAverage.round().toString()}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Colors.black),
                                           ),
-                                          ),
-                                          Text("Language: ${toprated.results[index].originalLanguage}",
-                                            style: TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: Colors.black
-                                          ),
+                                          Text(
+                                            "Language: ${toprated.results[index].originalLanguage}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Colors.black),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -98,12 +118,10 @@ class _TopratedState extends State<Toprated> {
                         );
                       },
                     );
+                  } else {
+                    return const Text("No data");
                   }
-                  else {
-                    return Text("No data");
-                  }
-                }
-            )
+                })
           ],
         ),
       ),

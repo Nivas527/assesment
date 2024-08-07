@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'Search_class.dart';
 import 'package:http/http.dart' as http;
 
-import 'Trending_series_individual.dart';
-
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -98,8 +96,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 50),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
                     child: Text("Please connect to WIFI and Try again",
                       style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),),
                   );
@@ -167,13 +165,13 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   );
                 } else {
-                  return Column(
+                  return const Column(
                     children: [
                       SizedBox(
                         height: 25,
                       ),
                       Center(
-                          child: const Text(
+                          child: Text(
                         "Click on search to Find Your TV series",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),

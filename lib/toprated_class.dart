@@ -4,12 +4,17 @@ class TopRated {
   int totalPages;
   int totalResults;
 
-  TopRated({required this.page, required this.results, required this.totalPages, required this.totalResults});
+  TopRated(
+      {required this.page,
+      required this.results,
+      required this.totalPages,
+      required this.totalResults});
 
   factory TopRated.fromJson(Map<String, dynamic> json) {
     return TopRated(
       page: json['page'],
-      results: (json['results'] as List).map((i) => Result.fromJson(i)).toList(),
+      results:
+          (json['results'] as List).map((i) => Result.fromJson(i)).toList(),
       totalPages: json['total_pages'],
       totalResults: json['total_results'],
     );

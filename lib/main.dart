@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'Bottom_navigation.dart';
-import 'TV_Series.dart';
-import 'Trending_series.dart';
-import 'movies.dart';
 
 void main() {
   runApp(const MyApp());

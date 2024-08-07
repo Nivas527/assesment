@@ -5,15 +5,14 @@ import 'package:http/http.dart' as http;
 import 'Episodes_classes.dart';
 import 'Series_details_class.dart';
 
-// Assuming you have EpisodeDetails, Episode, and other related classes properly defined and imported
 
 class EpisodeScreen extends StatelessWidget {
   final Seasons? epi;
 
   final SeriesDetails? epid;
 
-   EpisodeScreen({Key? key, required this.epi, required this.epid}) : super(key: key);
-
+  EpisodeScreen({Key? key, required this.epi, required this.epid})
+      : super(key: key);
 
   Future<EpisodeDetails> fetchEpisode() async {
     if (epi == null) {
@@ -34,67 +33,75 @@ class EpisodeScreen extends StatelessWidget {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back_rounded)),
+            child: const Icon(Icons.arrow_back_rounded)),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 22,right: 22,top: 15,bottom: 5),
-              child: Text(epid!.originalName,
+              padding: const EdgeInsets.only(
+                  left: 22, right: 22, top: 15, bottom: 5),
+              child: Text(
+                epid!.originalName,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 softWrap: true,
-                style: TextStyle(fontSize: 25,fontWeight: FontWeight.w900,color: Colors.black),),
+                style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 22,right: 22,bottom: 10),
-              child: Text(epi!.name.toString(),style: TextStyle(
-                fontWeight: FontWeight.w600,fontSize: 20,color: Colors.black87
-              ),
+              padding: const EdgeInsets.only(left: 22, right: 22, bottom: 10),
+              child: Text(
+                epi!.name.toString(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    color: Colors.black87),
               ),
             ),
             FutureBuilder<EpisodeDetails?>(
               future: fetchEpisode(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 50),
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
                     child: Text("Please connect to Wifi and Try again ",
-                        style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black)
-                    ),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Colors.black)),
                   );
                 } else if (snapshot.hasData) {
                   final details = snapshot.data;
                   if (details == null || details.episodes == null) {
-                    return Center(child: Text("No data available."));
+                    return const Center(child: Text("No data available."));
                   }
-        
+
                   return SingleChildScrollView(
                     child: Column(
                       children: [
                         ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
                           itemCount: details.episodes!.length,
                           itemBuilder: (context, index) {
                             final episode = details.episodes![index];
-        
+
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -110,10 +117,12 @@ class EpisodeScreen extends StatelessWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Row(
-                                        crossAxisAlignment : CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Image.network(
-                                            episode.stillPath?.isNotEmpty == true
+                                            episode.stillPath?.isNotEmpty ==
+                                                    true
                                                 ? "https://image.tmdb.org/t/p/w500${episode.stillPath}"
                                                 : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                             height: 80,
@@ -121,16 +130,17 @@ class EpisodeScreen extends StatelessWidget {
                                             fit: BoxFit.fill,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 15),
+                                            padding:
+                                                const EdgeInsets.only(left: 15),
                                             child: Column(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Episode: ${episode.episodeNumber ?? 'N/A'}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 18,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
@@ -138,7 +148,7 @@ class EpisodeScreen extends StatelessWidget {
                                                 ),
                                                 Text(
                                                   "Rating: (${episode.voteAverage?.toString() ?? 'N/A'}/10)",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,
                                                     color: Colors.white,
@@ -146,7 +156,7 @@ class EpisodeScreen extends StatelessWidget {
                                                 ),
                                                 Text(
                                                   "Run Time: ${episode.runtime?.toString() ?? "N/A"} mins",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,
                                                     color: Colors.white,
@@ -155,9 +165,14 @@ class EpisodeScreen extends StatelessWidget {
                                               ],
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 40),
-                                            child: Icon(Icons.download_for_offline_outlined,color: Colors.white,size: 25,),
+                                          const Padding(
+                                            padding: EdgeInsets.only(left: 40),
+                                            child: Icon(
+                                              Icons
+                                                  .download_for_offline_outlined,
+                                              color: Colors.white,
+                                              size: 25,
+                                            ),
                                           )
                                         ],
                                       ),
@@ -172,7 +187,7 @@ class EpisodeScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return Center(child: Text("No data available."));
+                  return const Center(child: Text("No data available."));
                 }
               },
             ),

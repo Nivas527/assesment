@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'TV_popular_class.dart';
 import 'Top_Series_class.dart';
-import 'movies.dart';
 
 class TvSeries extends StatefulWidget {
   const TvSeries({super.key});
@@ -77,11 +76,11 @@ class _TvSeriesState extends State<TvSeries> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          leading: Icon(
+          leading: const Icon(
             Icons.menu,
             color: Colors.black,
           ),
-          title: Text(
+          title: const Text(
             "Television Series",
             style: TextStyle(fontSize: 20, color: Colors.red),
           ),
@@ -94,9 +93,9 @@ class _TvSeriesState extends State<TvSeries> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SearchScreen()));
+                            builder: (context) => const SearchScreen()));
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.search_rounded,
                     size: 25,
                     color: Colors.black,
@@ -107,14 +106,14 @@ class _TvSeriesState extends State<TvSeries> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FutureBuilder<List<dynamic>>(
                 future: fetchTVData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   } else if (snapshot.hasData) {
@@ -126,22 +125,40 @@ class _TvSeriesState extends State<TvSeries> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 35,right: 35,top: 15,bottom: 25),
-                          child: CarouselSlider.builder(
-                            itemCount: 5,
-                            itemBuilder: (BuildContext context, dynamic index, int pageViewIndex) =>
-                                Container(
-                                  height: 250,
-                                  width: double.infinity,
-                                  color: Colors.grey.shade200,
-                                  child:
-                                    Image.network("https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}",fit: BoxFit.fill,),
+                          padding: const EdgeInsets.only(
+                              left: 35, right: 35, top: 15, bottom: 25),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey.shade300),
+                            child: CarouselSlider.builder(
+                              itemCount: 5,
+                              itemBuilder: (BuildContext context, dynamic index,
+                                      int pageViewIndex) =>
+                                  InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TrendingSeriesIndividual(
+                                                  out: populartv
+                                                      .results[index])));
+                                },
+                                child: Image.network(
+                                  populartv.results[index].posterPath.isNotEmpty
+                                      ? "https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}"
+                                      : "https://image.tmdb.org/t/p/w500${populartv.results[index].backdropPath}",
+                                  fit: BoxFit.fill,
                                 ),
-                            options: CarouselOptions(
-                              aspectRatio: 9/9,
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 2),
-                              enlargeCenterPage: true,
+                              ),
+                              options: CarouselOptions(
+                                  aspectRatio: 12 / 11,
+                                  autoPlay: true,
+                                  autoPlayInterval: const Duration(seconds: 3),
+                                  enlargeCenterPage: true,
+                                  clipBehavior: Clip.hardEdge),
                             ),
                           ),
                         ),
@@ -150,22 +167,26 @@ class _TvSeriesState extends State<TvSeries> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Trending Now", style: heading),
+                              Text("Popular Series", style: heading),
                               InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TrendingSeries()));
-                                  },
-                                  child: Text(
-                                    "See all >>",
-                                    style: seeall,
-                                  )),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TrendingSeries()));
+                                },
+                                child: Text(
+                                  "See all >>",
+                                  style: seeall,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 12, right: 12),
                           child: Container(
@@ -191,13 +212,14 @@ class _TvSeriesState extends State<TvSeries> {
                                                                   index])));
                                         },
                                         child: Image.network(
-                                          'https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}',
+                                          populartv.results[index].posterPath.isNotEmpty ?
+                                          'https://image.tmdb.org/t/p/w500${populartv.results[index].posterPath}'
+                                          : 'https://image.tmdb.org/t/p/w500${populartv.results[index].backdropPath}',
                                           height: 200,
                                           width: 150,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
-                                      // Wrap the Text widget with Expanded
                                     ],
                                   ),
                                 );
@@ -205,7 +227,7 @@ class _TvSeriesState extends State<TvSeries> {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Padding(
@@ -223,7 +245,7 @@ class _TvSeriesState extends State<TvSeries> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -240,12 +262,13 @@ class _TvSeriesState extends State<TvSeries> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${toptv.results[index].posterPath}',
+                                        toptv.results[index].posterPath.isNotEmpty ?
+                                        'https://image.tmdb.org/t/p/w500${toptv.results[index].posterPath}'
+                                        : 'https://image.tmdb.org/t/p/w500${toptv.results[index].backdropPath}',
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
                                       ),
-                                      // Wrap the Text widget with Expanded
                                     ],
                                   ),
                                 );
@@ -260,7 +283,7 @@ class _TvSeriesState extends State<TvSeries> {
                             style: heading,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -285,7 +308,6 @@ class _TvSeriesState extends State<TvSeries> {
                                         width: 150,
                                         fit: BoxFit.fill,
                                       ),
-                                      // Wrap the Text widget with Expanded
                                     ],
                                   ),
                                 );
@@ -300,7 +322,7 @@ class _TvSeriesState extends State<TvSeries> {
                             style: heading,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Padding(
@@ -325,7 +347,6 @@ class _TvSeriesState extends State<TvSeries> {
                                         width: 150,
                                         fit: BoxFit.fill,
                                       ),
-                                      // Wrap the Text widget with Expanded
                                     ],
                                   ),
                                 );
@@ -336,7 +357,7 @@ class _TvSeriesState extends State<TvSeries> {
                       ],
                     );
                   } else {
-                    return Text("No data");
+                    return const Text("No data");
                   }
                 },
               ),

@@ -17,36 +17,42 @@ class Dem extends StatefulWidget {
   State<Dem> createState() => _DemState();
 }
 
-
 class _DemState extends State<Dem> {
-
-
   Future<Movie> fetchMovies() async {
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/popular?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+    var resp = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/movie/popular?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return Movie.fromJson(data);
   }
 
   Future<Trending> fetchTrendingMovies() async {
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/trending/movie/day?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+    var resp = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/trending/movie/day?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return Trending.fromJson(data);
   }
 
-  Future<TopRated> fetchToprated()async {
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/top_rated?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+  Future<TopRated> fetchToprated() async {
+    var resp = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/movie/top_rated?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return TopRated.fromJson(data);
   }
 
   Future<Upcoming> fetchUpcoming() async {
-    var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/upcoming?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+    var resp = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/movie/upcoming?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return Upcoming.fromJson(data);
   }
 
   Future<List<dynamic>> fetchData() async {
-    final results = await Future.wait([fetchMovies(), fetchTrendingMovies(), fetchToprated(),fetchUpcoming()]);
+    final results = await Future.wait([
+      fetchMovies(),
+      fetchTrendingMovies(),
+      fetchToprated(),
+      fetchUpcoming()
+    ]);
     return results;
   }
 
@@ -58,17 +64,16 @@ class _DemState extends State<Dem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu, color: Colors.black),
-        title: Row(
+        leading: const Icon(Icons.menu, color: Colors.black),
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text("Movies", style: TextStyle(fontSize: 20, color: Colors.red)
-            ),
+            Text("Movies", style: TextStyle(fontSize: 20, color: Colors.red)),
           ],
         ),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Icon(Icons.search_rounded, color: Colors.black),
           )
         ],
@@ -80,17 +85,21 @@ class _DemState extends State<Dem> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               FutureBuilder<List<dynamic>>(
                 future: fetchData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 50),
-                      child: Text('Please connect to WIFI and Try again',
-                          style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Text(
+                        'Please connect to WIFI and Try again',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Colors.black),
                       ),
                     );
                   } else if (snapshot.hasData) {
@@ -101,27 +110,43 @@ class _DemState extends State<Dem> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 31,right: 31),
-                          child: CarouselSlider.builder(
-                            itemCount: 5,
-                            itemBuilder: (BuildContext context, dynamic index, int pageViewIndex) =>
-                                Container(
-                                  height: 200,
-                                  width: double.infinity,
-                                  color: Colors.grey.shade200,
-                                  child: Image.network('https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}',fit: BoxFit.fill,),
-                                ),
-                            options: CarouselOptions(
-                              aspectRatio: 9/9,
-                              autoPlay: true,
-                              autoPlayInterval: Duration(seconds: 2),
-                              enlargeCenterPage: true,
+                          padding: const EdgeInsets.only(left: 31, right: 31),
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.grey.shade300,
+                            ),
+                            child: CarouselSlider.builder(
+                              itemCount: trending.results.length,
+                              itemBuilder: (BuildContext context, dynamic index,
+
+                                      int pageViewIndex) =>
+                                  Image.network(
+                                trending.results[index].posterPath.isNotEmpty
+                                    ? 'https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}'
+                                    : trending.results[index].backdropPath
+                                            .isNotEmpty
+                                        ? "https://image.tmdb.org/t/p/w500${trending.results[index].backdropPath}"
+                                        : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
+                                fit: BoxFit.fill,
+                              ),
+                              options: CarouselOptions(
+                                aspectRatio: 9 / 9,
+                                autoPlay: true,
+                                autoPlayInterval: const Duration(seconds: 2),
+                                enlargeCenterPage: true,
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 25,),
+                        const SizedBox(
+                          height: 25,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 31, right: 31),
                           child: Row(
@@ -132,9 +157,11 @@ class _DemState extends State<Dem> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 15,),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12,right: 12),
+                          padding: const EdgeInsets.only(left: 12, right: 12),
                           child: Container(
                             color: Colors.blueGrey.shade100.withOpacity(0.5),
                             height: 215, // Adjust height as needed
@@ -147,7 +174,10 @@ class _DemState extends State<Dem> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}',
+                                        trending.results[index].posterPath
+                                                .isNotEmpty
+                                            ? 'https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}'
+                                            : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
@@ -160,21 +190,33 @@ class _DemState extends State<Dem> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 31,right: 31,top: 20),
+                          padding: const EdgeInsets.only(
+                              left: 31, right: 31, top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Top Rated",style: heading,),
+                              Text(
+                                "Top Rated",
+                                style: heading,
+                              ),
                               InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Toprated()));
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Toprated()));
                                   },
-                                  child: Text("See all>>",style: seeall,))
+                                  child: Text(
+                                    "See all>>",
+                                    style: seeall,
+                                  ))
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12,right: 12,top: 15),
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 15),
                           child: Container(
                             color: Colors.blueGrey.shade100.withOpacity(0.5),
                             height: 215, // Adjust height as needed
@@ -187,7 +229,10 @@ class _DemState extends State<Dem> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${toprated.results[index].posterPath}',
+                                        toprated.results[index].posterPath
+                                                .isNotEmpty
+                                            ? 'https://image.tmdb.org/t/p/w500${toprated.results[index].posterPath}'
+                                            : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
@@ -200,17 +245,25 @@ class _DemState extends State<Dem> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 31,right: 31,top: 20),
+                          padding: const EdgeInsets.only(
+                              left: 31, right: 31, top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Upcoming",style: heading,),
-                              Text("See all>>",style: seeall,)
+                              Text(
+                                "Upcoming",
+                                style: heading,
+                              ),
+                              Text(
+                                "See all>>",
+                                style: seeall,
+                              )
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12,right: 12,top: 15),
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 15),
                           child: Container(
                             color: Colors.blueGrey.shade100.withOpacity(0.5),
                             height: 215, // Adjust height as needed
@@ -223,7 +276,10 @@ class _DemState extends State<Dem> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${upcoming.results[index].posterPath}',
+                                        upcoming.results[index].posterPath
+                                                .isNotEmpty
+                                            ? 'https://image.tmdb.org/t/p/w500${upcoming.results[index].posterPath}'
+                                            : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
@@ -236,17 +292,25 @@ class _DemState extends State<Dem> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 31,right: 31,top: 20),
+                          padding: const EdgeInsets.only(
+                              left: 31, right: 31, top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Some Other Suggestions",style: heading,),
-                              Text("See all>>",style: seeall,)
+                              Text(
+                                "Some Other Suggestions",
+                                style: heading,
+                              ),
+                              Text(
+                                "See all>>",
+                                style: seeall,
+                              )
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 12,right: 12,top: 15),
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 15),
                           child: Container(
                             color: Colors.blueGrey.shade100.withOpacity(0.5),
                             height: 217, // Adjust height as needed
@@ -259,7 +323,10 @@ class _DemState extends State<Dem> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                        'https://image.tmdb.org/t/p/w500${movie.results[index].posterPath}',
+                                        movie.results[index].posterPath
+                                                .isNotEmpty
+                                            ? 'https://image.tmdb.org/t/p/w500${movie.results[index].posterPath}'
+                                            : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                         height: 200,
                                         width: 150,
                                         fit: BoxFit.fill,
@@ -274,7 +341,7 @@ class _DemState extends State<Dem> {
                       ],
                     );
                   } else {
-                    return Text('No data');
+                    return const Text('No data');
                   }
                 },
               ),
