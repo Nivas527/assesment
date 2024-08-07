@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:assesment/Trending_series_individual_search.dart';
 import 'package:flutter/material.dart';
 import 'Search_class.dart';
 import 'package:http/http.dart' as http;
@@ -72,7 +73,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 35,right: 35,top: 15),
+              padding: const EdgeInsets.only(left: 35, right: 35, top: 15),
               child: Container(
                 height: 50,
                 width: double.infinity,
@@ -82,9 +83,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                    foregroundColor: Colors.white
-                  ),
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.white),
                   onPressed: _search,
                   child: const Text("Click to Search"),
                 ),
@@ -98,7 +98,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  return Text("There is an error: ${snapshot.error}");
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Text("Please connect to WIFI and Try again",
+                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),),
+                  );
                 } else if (snapshot.hasData) {
                   final search = snapshot.data!;
                   return ListView.builder(
@@ -112,17 +116,18 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: InkWell(
-                            onTap: (){
-                              // Navigator.push(context, MaterialPageRoute(builder: (context) => TrendingSeriesIndividual(out: search.results[index],)));
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => TrendingSeriesIndividualSearch(out1: search.results[index],)));
                             },
                             child: Container(
                               color: Colors.grey.shade100,
                               child: Row(
                                 children: [
                                   Image.network(
-                                    search.results[index].posterPath.isNotEmpty ?
-                                    'https://image.tmdb.org/t/p/w500${search.results[index].posterPath}' :
-                                    "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png" ,                                  height: 140,
+                                    search.results[index].posterPath.isNotEmpty
+                                        ? 'https://image.tmdb.org/t/p/w500${search.results[index].posterPath}'
+                                        : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
+                                    height: 140,
                                     width: 140,
                                     fit: BoxFit.fill,
                                   ),
@@ -131,7 +136,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             search.results[index].originalName,
@@ -164,9 +169,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 } else {
                   return Column(
                     children: [
-                      SizedBox(height: 25,),
-                      Center(child: const Text("Click on search to Find Your TV series",
-                      style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Center(
+                          child: const Text(
+                        "Click on search to Find Your TV series",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
                       )),
                     ],
                   );

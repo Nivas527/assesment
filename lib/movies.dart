@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:assesment/toprated.dart';
 import 'package:assesment/toprated_class.dart';
 import 'package:assesment/upcoming_class.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'movieclass.dart';
@@ -37,13 +38,13 @@ class _DemState extends State<Dem> {
     var data = jsonDecode(resp.body);
     return TopRated.fromJson(data);
   }
-  
+
   Future<Upcoming> fetchUpcoming() async {
     var resp = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/upcoming?api_key=ea80466bd55e4f4e143564b39696b4bd"));
     var data = jsonDecode(resp.body);
     return Upcoming.fromJson(data);
   }
-  
+
   Future<List<dynamic>> fetchData() async {
     final results = await Future.wait([fetchMovies(), fetchTrendingMovies(), fetchToprated(),fetchUpcoming()]);
     return results;
@@ -80,24 +81,18 @@ class _DemState extends State<Dem> {
           child: Column(
             children: [
               SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 31, right: 31),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Trending Now", style: heading),
-                    Text("See all>>", style: seeall)
-                  ],
-                ),
-              ),
-              SizedBox(height: 15),
               FutureBuilder<List<dynamic>>(
                 future: fetchData(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text('Please connect to WIFI and Try again',
+                          style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),
+                      ),
+                    );
                   } else if (snapshot.hasData) {
                     final movie = snapshot.data![0] as Movie;
                     final trending = snapshot.data![1] as Trending;
@@ -106,6 +101,38 @@ class _DemState extends State<Dem> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 31,right: 31),
+                          child: CarouselSlider.builder(
+                            itemCount: 5,
+                            itemBuilder: (BuildContext context, dynamic index, int pageViewIndex) =>
+                                Container(
+                                  height: 200,
+                                  width: double.infinity,
+                                  color: Colors.grey.shade200,
+                                  child: Image.network('https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}',fit: BoxFit.fill,),
+                                ),
+                            options: CarouselOptions(
+                              aspectRatio: 9/9,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 2),
+                              enlargeCenterPage: true,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 25,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 31, right: 31),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Trending Now", style: heading),
+                              Text("See all>>", style: seeall)
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 15,),
                         Padding(
                           padding: const EdgeInsets.only(left: 12,right: 12),
                           child: Container(

@@ -72,7 +72,12 @@ class EpisodeScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text("There is an error: ${snapshot.error}"));
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Text("Please connect to Wifi and Try again ",
+                        style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black)
+                    ),
+                  );
                 } else if (snapshot.hasData) {
                   final details = snapshot.data;
                   if (details == null || details.episodes == null) {

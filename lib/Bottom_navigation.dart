@@ -11,8 +11,8 @@ class BottomNavigation extends StatefulWidget {
 
 int Selectedindex = 0;
 final tabs = [
-  TvSeries(),
-  Dem(),
+  const TvSeries(),
+  const Dem(),
 ];
 
 class _BottomNavigationState extends State<BottomNavigation> {
@@ -24,15 +24,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
         currentIndex: Selectedindex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.tv,color: Colors.red,size: 22,),
+            icon: Icon(
+              Icons.tv,
+              color: Colors.red,
+              size: 22,
+            ),
             label: "TV Series",
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.movie_creation_outlined,color: Colors.red,size: 22,),
+            icon: Icon(
+              Icons.movie_creation_outlined,
+              color: Colors.red,
+              size: 22,
+            ),
             label: "Movies",
           )
         ],
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             Selectedindex = index;
           });

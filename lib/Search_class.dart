@@ -14,7 +14,8 @@ class Search {
   factory Search.fromJson(Map<String, dynamic> json) {
     return Search(
       page: json['page'] ?? 0,
-      results: List<Results1>.from(json['results'].map((v) => Results1.fromJson(v))),
+      results:
+          List<Results1>.from(json['results'].map((v) => Results1.fromJson(v))),
       totalPages: json['total_pages'] ?? 0,
       totalResults: json['total_results'] ?? 0,
     );

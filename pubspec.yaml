@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.2.0
   liquid_pull_to_refresh: ^3.0.1
+  sqflite: ^2.3.3+1
+  path_provider: ^2.1.4
+  carousel_slider: ^4.2.1
 
 
 dev_dependencies:

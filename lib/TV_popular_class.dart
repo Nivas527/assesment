@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class TvPopular {
   int page;
   List<Results> results;
@@ -86,11 +88,11 @@ class Results {
 
   Map<String, dynamic> toJson() {
     return {
-      'adult': adult,
+      'adult': adult ? 1 : 0,
       'backdrop_path': backdropPath,
-      'genre_ids': genreIds,
+      'genre_ids': jsonEncode(genreIds),
       'id': id,
-      'origin_country': originCountry,
+      'origin_country': jsonEncode(originCountry),
       'original_language': originalLanguage,
       'original_name': originalName,
       'overview': overview,

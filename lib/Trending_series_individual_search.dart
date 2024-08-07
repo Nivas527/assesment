@@ -4,19 +4,19 @@ import 'package:assesment/Series_details_class.dart';
 import 'package:flutter/material.dart';
 import 'Cast_details_class.dart';
 import 'Episodes_classes.dart';
+import 'Search_class.dart';
 import 'TV_popular_class.dart';
 import 'package:http/http.dart' as http;
 
 import 'TV_series_episodes.dart';
 
-class TrendingSeriesIndividual extends StatelessWidget {
-  final Results out;
+class TrendingSeriesIndividualSearch extends StatelessWidget {
+  final Results1 out1;
 
-  // final Results1 out1;
 
-  const TrendingSeriesIndividual({
+  const TrendingSeriesIndividualSearch({
     super.key,
-    required this.out,
+    required this.out1,
   });
 
   @override
@@ -31,7 +31,7 @@ class TrendingSeriesIndividual extends StatelessWidget {
             bottom: TabBar(
                 labelColor: Colors.red,
                 labelStyle:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 isScrollable: false,
                 tabs: [
                   Tab(
@@ -48,12 +48,12 @@ class TrendingSeriesIndividual extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.only(left: 22, right: 22, top: 15),
             child: TabBarView(children: [
-              OverviewTab(out: out),
-              EpisodesTab(
-                out: out,
+              OverviewTab1(out1: out1),
+              EpisodesTab1(
+                out1: out1,
               ),
-              CastTab(
-                out: out,
+              CastTab1(
+                out1: out1,
               )
             ]),
           ),
@@ -63,10 +63,10 @@ class TrendingSeriesIndividual extends StatelessWidget {
   }
 }
 
-class OverviewTab extends StatelessWidget {
-  final Results? out;
+class OverviewTab1 extends StatelessWidget {
+  final Results1? out1;
 
-  const OverviewTab({super.key, required this.out});
+  const OverviewTab1({super.key, required this.out1});
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +83,9 @@ class OverviewTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.black12),
                 child: Image.network(
-                  out?.posterPath == null ?
+                  out1?.posterPath == null ?
                   "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png"
-                    :  "https://image.tmdb.org/t/p/w500${out?.posterPath}",
+                      :  "https://image.tmdb.org/t/p/w500${out1?.posterPath}",
                   height: 350,
                   width: double.infinity,
                   fit: BoxFit.fill,
@@ -100,7 +100,7 @@ class OverviewTab extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      out!.originalName,
+                      out1!.originalName,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       softWrap: true,
@@ -115,7 +115,7 @@ class OverviewTab extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "Rating : ${out?.voteAverage.round()}/10 (${out?.voteCount})",
+                          "Rating : ${out1?.voteAverage.round()}/10 (${out1?.voteCount})",
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14),
                         ),
@@ -183,7 +183,7 @@ class OverviewTab extends StatelessWidget {
               height: 15,
             ),
             Text(
-              out!.overview,
+              out1!.overview,
               style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
@@ -196,18 +196,18 @@ class OverviewTab extends StatelessWidget {
   }
 }
 
-class EpisodesTab extends StatelessWidget {
-  final Results? out;
+class EpisodesTab1 extends StatelessWidget {
+  final Results1? out1;
 
-  const EpisodesTab({super.key, required this.out});
+  const EpisodesTab1({super.key, required this.out1});
 
   Future<SeriesDetails?> fetchDetails() async {
-    if (out == null) return null;
-    print(out?.id);
+    if (out1 == null) return null;
+    print(out1?.id);
 
     try {
       final response = await http.get(Uri.parse(
-          "https://api.themoviedb.org/3/tv/${out?.id}?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+          "https://api.themoviedb.org/3/tv/${out1?.id}?api_key=ea80466bd55e4f4e143564b39696b4bd"));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -223,7 +223,7 @@ class EpisodesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (out == null) {
+    if (out1 == null) {
       return Center(
         child: Text("No data available."),
       );
@@ -267,9 +267,9 @@ class EpisodesTab extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EpisodeScreen(
-                                            epi: details.seasons[index],
-                                            epid: details,
-                                          )));
+                                        epi: details.seasons[index],
+                                        epid: details,
+                                      )));
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -284,7 +284,7 @@ class EpisodesTab extends StatelessWidget {
                                   children: [
                                     Image.network(
                                       details.seasons[index].posterPath
-                                              .isNotEmpty
+                                          .isNotEmpty
                                           ? "https://image.tmdb.org/t/p/w500${details.seasons[index].posterPath}"
                                           : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                       height: 80,
@@ -295,9 +295,9 @@ class EpisodesTab extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 15),
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: [
                                           Text(details.seasons[index].name,
                                               style: TextStyle(
@@ -344,18 +344,18 @@ class EpisodesTab extends StatelessWidget {
   }
 }
 
-class CastTab extends StatelessWidget {
-  final Results? out;
+class CastTab1 extends StatelessWidget {
+  final Results1? out1;
 
-  const CastTab({super.key, required this.out});
+  const CastTab1({super.key, required this.out1});
 
   Future<Castdetails?> fetchCast() async {
-    if (out == null) return null;
-    print(out?.id);
+    if (out1 == null) return null;
+    print(out1?.id);
 
     try {
       final response = await http.get(Uri.parse(
-          "https://api.themoviedb.org/3/tv/${out!.id}/credits?api_key=ea80466bd55e4f4e143564b39696b4bd"));
+          "https://api.themoviedb.org/3/tv/${out1!.id}/credits?api_key=ea80466bd55e4f4e143564b39696b4bd"));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -371,7 +371,7 @@ class CastTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (out == null) {
+    if (out1 == null) {
       return Center(
         child: Text("No data available."),
       );
@@ -429,9 +429,9 @@ class CastTab extends StatelessWidget {
                                   Expanded(
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Name : ${details.cast[index].name}",

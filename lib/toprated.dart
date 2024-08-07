@@ -35,10 +35,15 @@ class _TopratedState extends State<Toprated> {
                 future: fetchToprated(),
                 builder: (context, snapshot){
                   if(snapshot.connectionState==ConnectionState.waiting){
-                    return CircularProgressIndicator();
+                    return const Center(child:  CircularProgressIndicator());
                   }
                   else if(snapshot.hasError){
-                    return Text("there is a error");
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: const Text("Please Connect to WIFI and Try again",
+                          style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20,color: Colors.black),
+                      ),
+                    );
                   }
                   else if(snapshot.hasData){
                     final toprated = snapshot.data!;
