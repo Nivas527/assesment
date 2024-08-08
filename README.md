@@ -14,5 +14,6 @@ A new Flutter project.
 - And there is also a Option of Cast that showcase the cast those who are involved in the Series
 - After in the home page on the top right corner you can see the Search Icon,
 - click on that and click the button for what you want to search then it will show all the Data
+- And Also there is a pull to refresh option in Popular series page
 
 
