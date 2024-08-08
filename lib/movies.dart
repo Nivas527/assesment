@@ -124,15 +124,11 @@ class _DemState extends State<Dem> {
                             child: CarouselSlider.builder(
                               itemCount: trending.results.length,
                               itemBuilder: (BuildContext context, dynamic index,
-
                                       int pageViewIndex) =>
                                   Image.network(
                                 trending.results[index].posterPath.isNotEmpty
                                     ? 'https://image.tmdb.org/t/p/w500${trending.results[index].posterPath}'
-                                    : trending.results[index].backdropPath
-                                            .isNotEmpty
-                                        ? "https://image.tmdb.org/t/p/w500${trending.results[index].backdropPath}"
-                                        : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
+                                    : "https://cdn4.iconfinder.com/data/icons/picture-sharing-sites/32/No_Image-1024.png",
                                 fit: BoxFit.fill,
                               ),
                               options: CarouselOptions(

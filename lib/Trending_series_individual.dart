@@ -35,7 +35,7 @@ class TrendingSeriesIndividual extends StatelessWidget {
                     text: "Overview",
                   ),
                   Tab(
-                    text: "Episodes",
+                    text: "Seasons",
                   ),
                   Tab(
                     text: "Cast",

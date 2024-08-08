@@ -4,13 +4,15 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+** Please Run The project when connected to Wifi **
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+-This is made in a design of Ott platform, that contains Tv series and Movies, Movies is just an UI element,
+- In Tv series if click on see all of Popular Series you can see all the popular series with pagination, scroll down to view pagination where there will be a Load more button
+- After that if you click on Any series it will show the overview of series and Seasons tab if you click on it, it will show all the seasons
+- If you click on any season it will show all the episodes along with Run time
+- And there is also a Option of Cast that showcase the cast those who are involved in the Series
+- After in the home page on the top right corner you can see the Search Icon,
+- click on that and click the button for what you want to search then it will show all the Data
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
